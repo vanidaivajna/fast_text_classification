@@ -154,4 +154,23 @@ for fold, (train_indices, val_indices) in enumerate(kfold.split(texts), 1):
 overall_metrics = {
     "Precision": sum([fold[0] for fold in fold_metrics]) / len(fold_metrics),
     "Recall": sum
+# Print overall metrics
+print("Overall Metrics:")
+for metric, value in overall_metrics.items():
+    print(f"{metric}: {value:.2f}")
 
+# Step 10: Calculate class-level metrics
+class_avg_metrics = {}
+for intent in intent_data:
+    precision_avg = sum(class_metrics[intent]["Precision"]) / len(class_metrics[intent]["Precision"])
+    recall_avg = sum(class_metrics[intent]["Recall"]) / len(class_metrics[intent]["Recall"])
+    f1_avg = sum(class_metrics[intent]["F1-Score"]) / len(class_metrics[intent]["F1-Score"])
+    class_avg_metrics[intent] = {"Precision": precision_avg, "Recall": recall_avg, "F1-Score": f1_avg}
+
+# Print class-level metrics
+print("\nClass-level Metrics:")
+for intent, metrics in class_avg_metrics.items():
+    print(f"Intent: {intent}")
+    for metric, value in metrics.items():
+        print(f"{metric}: {value:.2f}")
+    print()
