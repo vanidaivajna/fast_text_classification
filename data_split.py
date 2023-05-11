@@ -1,20 +1,22 @@
 import random
 from sklearn.model_selection import train_test_split
+import pandas as pd
 
-# Step 1: Load labeled data
-data = [
-    ("This is a sample text 1.", "intent1"),
-    ("Another text for intent1.", "intent1"),
-    ("Some text for intent2.", "intent2"),
-    ("This is a sample text 2.", "intent2"),
-    ("A different text for intent3.", "intent3"),
-    ("Text related to intent3.", "intent3")
+# Step 1: Load labeled data into a Pandas DataFrame
+data = pd.DataFrame([
+    {"text": "This is a sample text 1.", "intent": "intent1"},
+    {"text": "Another text for intent1.", "intent": "intent1"},
+    {"text": "Some text for intent2.", "intent": "intent2"},
+    {"text": "This is a sample text 2.", "intent": "intent2"},
+    {"text": "A different text for intent3.", "intent": "intent3"},
+    {"text": "Text related to intent3.", "intent": "intent3"}
     # Add more data samples...
-]
+])
 
 # Step 2: Separate data by intent labels
 intent_data = {}
-for text, intent in data:
+for _, row in data.iterrows():
+    text, intent = row["text"], row["intent"]
     if intent not in intent_data:
         intent_data[intent] = []
     intent_data[intent].append(text)
@@ -38,13 +40,15 @@ train_texts, valid_texts, train_labels, valid_labels = train_test_split(
     train_texts, train_labels, test_size=0.2, stratify=train_labels, random_state=42
 )
 
-# Step 6: Print the resulting datasets
+# Step 6: Create new DataFrames for train, validation, and test sets
+train_data = pd.DataFrame({"text": train_texts, "intent": train_labels})
+valid_data = pd.DataFrame({"text": valid_texts, "intent": valid_labels})
+test_data = pd.DataFrame({"text": test_texts, "intent": test_labels})
+
+# Step 7: Print the resulting datasets
 print("Train set:")
-for text, label in zip(train_texts, train_labels):
-    print(label, text)
+print(train_data)
 print("\nValidation set:")
-for text, label in zip(valid_texts, valid_labels):
-    print(label, text)
+print(valid_data)
 print("\nTest set:")
-for text, label in zip(test_texts, test_labels):
-    print(label, text)
+print(test_data)
