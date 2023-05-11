@@ -151,10 +151,15 @@ for fold, (train_indices, val_indices) in enumerate(kfold.split(texts), 1):
     print(f"F1-Score: {fold_report[2]:.2f}")
 
 # Step 9: Calculate average metrics across folds
+# Step 9: Calculate average metrics across folds
 overall_metrics = {
     "Precision": sum([fold[0] for fold in fold_metrics]) / len(fold_metrics),
-    "Recall": sum
+    "Recall": sum([fold[1] for fold in fold_metrics]) / len(fold_metrics),
+    "F1-Score": sum([fold[2] for fold in fold_metrics]) / len(fold_metrics)
+}
+
 # Print overall metrics
+print("Overall Metrics:")
 print("Overall Metrics:")
 for metric, value in overall_metrics.items():
     print(f"{metric}: {value:.2f}")
