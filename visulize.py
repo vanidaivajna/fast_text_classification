@@ -1,3 +1,12 @@
+for i in range(len(labels)):
+    label = labels[i]
+    confusion_matrix = confusion_matrices[i]
+    sns.heatmap(confusion_matrix, annot=True, cmap="Blues")
+    plt.title(f"Confusion Matrix for {label}")
+    plt.xlabel("Predicted Label")
+    plt.ylabel("True Label")
+    plt.show()
+
 import fasttext
 import ipywidgets as widgets
 from IPython.display import display
