@@ -179,3 +179,14 @@ for intent, metrics in class_avg_metrics.items():
     for metric, value in metrics.items():
         print(f"{metric}: {value:.2f}")
     print()
+    
+   #---------------------
+model = fasttext.train_supervised(
+    input=train_file,
+    lr=0.1,
+    epoch=10,
+    wordNgrams=2,
+    dim=100,
+    minCount=5,
+    bucket=100000
+)
