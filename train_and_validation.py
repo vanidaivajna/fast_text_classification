@@ -23,6 +23,29 @@ predicted_labels = [label[0].replace("__label__", "") for label in predictions[0
 # Step 5: Generate classification report
 report = classification_report(val_labels, predicted_labels)
 print("Classification Report:")
+
+
+
+
+
+
+
+
+
+
+
+
+# Step 4: Predict labels and probability scores on the validation data
+predictions = model.predict(val_texts, k=-1)  # Set k=-1 to get probability scores for all labels
+predicted_labels = [label[0].replace("__label__", "") for label in predictions[0]]
+probability_scores = [score[0] for score in predictions[1]]  # Get the probability score for the predicted label
+
+# Step 5: Create a DataFrame with predicted labels, actual labels, and probability scores
+results = pd.DataFrame({'Text': val_texts, 'Actual': val_labels, 'Predicted': predicted_labels, 'Probability': probability_scores})
+
+# Print the DataFrame
+print("Predicted vs Actual:")
+print(results)
 print(report)
 
 # Step 6: Generate confusion matrix
