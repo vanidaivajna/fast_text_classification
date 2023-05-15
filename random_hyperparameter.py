@@ -1,26 +1,15 @@
+import pandas as pd
 import fasttext
 import random
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 
-# Step 1: Convert train data to FastText format
-train_data_file = "train_data.txt"
-train_data = train_data[['intent', 'text']]  # Assuming your train data DataFrame has 'intent' and 'text' columns
-train_data['label'] = '__label__' + train_data['intent']
-train_data[['label', 'text']].to_csv(train_data_file, sep='\t', index=False, header=False)
+# Step 1: Divide the data into train and validation sets
+train_data, val_data = train_test_split(data, train_size=0.8, random_state=42)
 
-# Step 2: Split the data into train and validation sets
-train_file = "train.txt"
-val_file = "val.txt"
-train_ratio = 0.8  # Change the ratio as per your preference
-
-# Split the data into train and validation sets
-train_data, val_data = train_test_split(train_data, train_size=train_ratio, random_state=42)
-
-# Save the train and validation data files
-train_data[['label', 'text']].to_csv(train_file, sep='\t', index=False, header=False)
-val_data[['label', 'text']].to_csv(val_file, sep='\t', index=False, header=False)
+# Step 2: Convert train data to FastText format
+train_file = "train_data.txt"
+train_data[['intent', 'text']].to_csv(train_file, sep='\t', index=False, header=False)
 
 # Step 3: Define a function to evaluate the model on F1 score
 def evaluate_model(model, validation_data):
@@ -66,11 +55,3 @@ for trial in range(num_trials):
 
 # Step 6: Use the best model for testing or inference
 # Evaluate the best model on test data or use it for inference
-
-# Optional: Print the confusion matrix
-val_labels = val_data['intent'].tolist()
-val_texts = val_data['text'].tolist()
-predictions = [best_model.predict(text)[0][0].replace("__label__", "") for text in val_texts]
-confusion_mat = confusion_matrix(val_labels, predictions)
-plt.figure(figsize=(8, 6))
-sns.heatmap(confusion_mat, annot=True,
